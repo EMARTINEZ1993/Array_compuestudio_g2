@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía del taller práctico de arreglos</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #1e293b;
+            background: #eef2ff;
+        }
+
+        * {
+            box-sizing: border-box;
+
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.7;
+        }
+
+        main {
+            width: min(100%, 920px);
+            margin: 0 auto;
+            padding: clamp(24px, 5vw, 56px);
+            background: #fff;
+            border: 1px solid #dbe3f0;
+            border-radius: 20px;
+            box-shadow: 0 18px 50px #1e293b18;
+        }
+
+        h1, h2, h3 {
+            line-height: 1.25;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #312e81;
+            font-size: clamp(2rem, 5vw, 3rem);
+        }
+
+        h2 {
+            margin-top: 2.5rem;
+            padding-bottom: 10px;
+            color: #4338ca;
+            border-bottom: 2px solid #e0e7ff;
+        }
+
+        h3 {
+            margin-top: 1.8rem;
+            color: #0f766e;
+        }
+
+        p, li {
+            font-size: 1rem;
+        }
+
+        li {
+            padding-left: 4px;
+            margin: 6px 0;
+        }
+
+        code {
+            padding: 2px 6px;
+            color: #9f1239;
+            background: #fff1f2;
+            border-radius: 5px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: .92em;
+        }
+
+        pre {
+            position: relative;
+            max-width: 100%;
+            overflow-x: auto;
+            padding: 44px 16px 16px;
+            color: #e2e8f0;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            line-height: 1.4;
+            white-space: pre;
+        }
+
+        .copy-code-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1;
+            padding: 6px 12px;
+            color: #fff;
+            background: #4338ca;
+            border: 1px solid #818cf8;
+            border-radius: 6px;
+            font: inherit;
+            font-size: .85rem;
+            cursor: pointer;
+        }
+
+        .copy-code-button:hover {
+            background: #3730a3;
+        }
+
+        .copy-code-button:focus-visible {
+            outline: 3px solid #a5b4fc;
+            outline-offset: 2px;
+        }
+
+        pre code {
+            padding: 0;
+            color: inherit;
+            background: transparent;
+            font-size: .9rem;
+        }
+
+        pre code.language-javascript {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 16px 10px;
+            }
+
+            main {
+                padding: 22px 18px;
+                border-radius: 14px;
+            }
+
+            pre {
+                padding: 42px 14px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Guía del taller práctico de arreglos</h1>
+        <p>En esta guía construirás paso a paso tres ejercicios: registro de nombres, inventario de productos y sistema de ventas. El ejercicio 4 es un reto de búsqueda de estudiantes que desarrollarás por tu cuenta.</p>
+        <h2>1. Preparar el proyecto</h2>
+        <p>La guía es este archivo <code>index.html</code>. Crea una carpeta aparte llamada <code>taller-array</code> para los archivos del proyecto y no reemplaces la guía con el menú de ejemplo.</p>
+        <ol>
+            <li>Crea una carpeta llamada <code>taller-array</code>.</li>
+            <li>Dentro de ella, crea los archivos HTML y la carpeta <code>js</code> con esta estructura. El ejercicio 4 queda para que lo completes:</li>
+        </ol>
+        <pre><code class="language-text">taller-array/
+├── index.html
+├── ejercicio1.html
+├── ejercicio2.html
+├── ejercicio3.html
+├── ejercicio4.html
+└── js/
+    ├── ejercicio1.js
+    ├── ejercicio2.js
+    ├── ejercicio3.js
+    └── ejercicio4.js</code></pre>
+        <ol start="3">
+            <li>Abre la carpeta completa en Visual Studio Code.</li>
+            <li>Guarda el menú principal en <code>taller-array/index.html</code>. Escribe el HTML de cada ejercicio en su archivo y el JavaScript correspondiente dentro de <code>js</code>.</li>
+            <li>Para probar el proyecto, abre <code>index.html</code> en un navegador y entra a cada ejercicio.</li>
+        </ol>
+        <h2>2. Conceptos que usarás</h2>
+        <ul>
+            <li>Un <strong>arreglo</strong> guarda varios valores en una sola variable, por ejemplo: <code>let nombres = [];</code>.</li>
+            <li><code>push(valor)</code> agrega un elemento al final del arreglo.</li>
+            <li><code>document.getElementById("...")</code> obtiene un elemento HTML por su <code>id</code>.</li>
+            <li><code>.value</code> lee o cambia el valor de un campo de entrada.</li>
+            <li><code>.textContent</code> y <code>.innerHTML</code> permiten actualizar contenido de la página.</li>
+            <li><code>parseFloat()</code> y <code>parseInt()</code> convierten texto ingresado en números; <code>toLocaleString()</code> presenta un número con separadores de miles.</li>
+            <li><code>forEach()</code> permite ejecutar una acción para cada elemento de un arreglo.</li>
+            <li>Una función agrupa instrucciones para ejecutar una tarea.</li>
+            <li>En este proyecto, cada botón usa <code>type="button"</code> y llama a una función con <code>onclick</code>, por ejemplo: <code>&lt;button type="button" onclick="miFuncion()"&gt;Agregar&lt;/button&gt;</code>.</li>
+            <li>Los <code>id</code> del HTML y los consultados en JavaScript deben coincidir exactamente.</li>
+        </ul>
+        <h2>3. Crear el menú principal</h2>
+        <p>En <code>taller-array/index.html</code>, agrega enlaces a cada ejercicio:</p>
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Taller práctico de arrays&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Taller práctico de Arrays&lt;/h1&gt;
+    &lt;p&gt;Selecciona el ejercicio que deseas desarrollar:&lt;/p&gt;
+    &lt;ol&gt;
+        &lt;li&gt;&lt;a href=&quot;ejercicio1.html&quot;&gt;Ejercicio 1: Registro de nombres&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;ejercicio2.html&quot;&gt;Ejercicio 2: Inventario de productos&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;ejercicio3.html&quot;&gt;Ejercicio 3: Sistema de ventas&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;ejercicio4.html&quot;&gt;Reto final: Buscador de estudiantes&lt;/a&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        <p>Cada enlace debe apuntar al nombre exacto de su archivo.</p>
+        <h2>4. Ejercicio 1: Registro de nombres</h2>
+        <h3>Paso 1: crear el HTML</h3>
+        <p>En <code>ejercicio1.html</code>, agrega el campo donde se escribirá un nombre, el botón, la lista y el contador. El <code>onclick</code> llama a la función que programarás:</p>
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Registro de nombres&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Registro de nombres&lt;/h1&gt;
+    &lt;input type=&quot;text&quot; id=&quot;nombre&quot;&gt;
+    &lt;button type=&quot;button&quot; onclick=&quot;agregarNombre()&quot;&gt;Agregar&lt;/button&gt;
+
+    &lt;h2&gt;Personas registradas&lt;/h2&gt;
+    &lt;ul id=&quot;lista&quot;&gt;&lt;/ul&gt;
+    &lt;p id=&quot;cantidad&quot;&gt;&lt;/p&gt;
+
+    &lt;script src=&quot;js/ejercicio1.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <h3>Paso 2: programar la lógica</h3>
+        <p>En <code>js/ejercicio1.js</code>:</p>
+        <ol>
+            <li>Crea un arreglo vacío para guardar los nombres.</li>
+            <li>Obtén el campo, la lista y el contador por sus <code>id</code>.</li>
+            <li>En <code>agregarNombre()</code>, lee el campo, quita espacios sobrantes y convierte el texto a mayúsculas.</li>
+            <li>No agregues el nombre si está vacío o ya existe.</li>
+            <li>Si es válido, agrégalo con <code>push</code>, limpia el campo y llama a <code>mostrarNombre()</code>.</li>
+            <li>En <code>mostrarNombre()</code>, recorre el arreglo y actualiza la lista y el total.</li>
+        </ol>
+        <pre><code class="language-javascript">let listaNombres = [];
+function agregarNombre() {
+    let nombre = document.getElementById("nombre").value.trim().toUpperCase();
+
+    if (nombre === &quot;&quot;) {
+        alert(&quot;Ingrese el nombre&quot;);
+        return;
+    }
+
+    else if (listaNombres.includes(nombre)) {
+        alert(`El nombre ${nombre} ya está registrado`);
+        return;
+    }
+    else{
+
+        listaNombres.push(nombre);
+        document.getElementById("nombre").value = &quot;&quot;;
+        mostrarNombre();
+    }
+}
+
+function mostrarNombre() {
+
+    let lista = document.getElementById(&quot;lista&quot;);
+    let cantidad = document.getElementById(&quot;cantidad&quot;);
+    lista.innerHTML = &quot;&quot;;
+
+    for (let i = 0; i &lt; listaNombres.length; i++) {
+        lista.innerHTML += `&lt;li&gt;${listaNombres[i]}&lt;/li&gt;`;
+    }
+
+    cantidad.textContent = `Total nombres: ${listaNombres.length}`;
+}</code></pre>
+
+            <h3>Paso 3: probar</h3>
+            <ul>
+                <li>Agrega un nombre y comprueba que aparezca en la lista.</li>
+                <li>Intenta agregar el mismo nombre con mayúsculas o minúsculas diferentes.</li>
+                <li>Intenta agregar el campo vacío y verifica que se muestre el mensaje.</li>
+                <li>Comprueba que el total cambie después de cada nombre válido.</li>
+            </ul>
+
+        <h2>5. Ejercicio 2: Inventario de productos</h2>
+        <h3>Paso 1: crear el HTML</h3>
+        <p>En <code>ejercicio2.html</code>, crea campos para el nombre, precio y cantidad, además de una tabla:</p>
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Inventario de productos&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Inventario de productos&lt;/h1&gt;
+
+    &lt;form id=&quot;formulario&quot;&gt;
+        &lt;label for=&quot;producto&quot;&gt;Nombre del producto:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;producto&quot; required&gt;
+
+        &lt;label for=&quot;precio&quot;&gt;Precio unitario:&lt;/label&gt;
+        &lt;input type=&quot;number&quot; id=&quot;precio&quot; min=&quot;0.01&quot; step=&quot;0.01&quot; required&gt;
+
+        &lt;label for=&quot;cantidad&quot;&gt;Cantidad:&lt;/label&gt;
+        &lt;input type=&quot;number&quot; id=&quot;cantidad&quot; min=&quot;1&quot; step=&quot;1&quot; required&gt;
+
+        &lt;button type=&quot;button&quot; onclick=&quot;agregarProducto()&quot;&gt;Agregar producto&lt;/button&gt;
+    &lt;/form&gt;
+
+    &lt;h2&gt;Productos registrados&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Producto&lt;/th&gt;
+                &lt;th&gt;Precio&lt;/th&gt;
+                &lt;th&gt;Cantidad&lt;/th&gt;
+                &lt;th&gt;Subtotal&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody id=&quot;tabla&quot;&gt;&lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;h2&gt;Resultados&lt;/h2&gt;
+    &lt;p id=&quot;total&quot;&gt;&lt;/p&gt;
+
+    &lt;script src=&quot;js/ejercicio2.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        <h3>Paso 2: programar la lógica</h3>
+        <p>En <code>js/ejercicio2.js</code>, cada producto será un objeto guardado en un arreglo. El subtotal se calcula multiplicando el precio por la cantidad:</p>
+        <pre><code class="language-javascript">let listaProductos = [];
+
+function agregarProducto() {
+    let producto = document.getElementById("producto").value.trim();
+    let precio = parseFloat(document.getElementById("precio").value);
+    let cantidad = parseInt(document.getElementById("cantidad").value, 10);
+
+    if (producto === "" || isNaN(precio) || isNaN(cantidad)) {
+        alert("Llene todos los campos");
+        return;
+    }
+
+    listaProductos.push({
+        nombre: producto,
+        precio: precio,
+        cantidad: cantidad
+    });
+
+    document.getElementById("formulario").reset();
+    mostrar();
+}
+
+function mostrar() {
+    let tabla = document.getElementById("tabla");
+    let total = document.getElementById("total");
+    let totalNuevo = 0;
+
+    tabla.innerHTML = "";
+
+    for (let i = 0; i &lt; listaProductos.length; i++) {
+        let subtotal = listaProductos[i].precio * listaProductos[i].cantidad;
+
+        tabla.innerHTML += `&lt;tr&gt;
+            &lt;td&gt;${listaProductos[i].nombre}&lt;/td&gt;
+            &lt;td&gt;${listaProductos[i].precio}&lt;/td&gt;
+            &lt;td&gt;${listaProductos[i].cantidad}&lt;/td&gt;
+            &lt;td&gt;${subtotal}&lt;/td&gt;
+        &lt;/tr&gt;`;
+
+        totalNuevo += subtotal;
+    }
+
+    total.textContent = `Total: ${totalNuevo}`;
+}</code></pre>
+
+        <h3>Paso 3: probar</h3>
+        <ul>
+            <li>Registra varios productos con precios y cantidades diferentes.</li>
+            <li>Verifica el subtotal de cada producto y el total del inventario.</li>
+            <li>Intenta dejar un campo vacío y observa la validación del navegador.</li>
+            <li>Comprueba que el formulario se limpie después de agregar un producto.</li>
+        </ul>
+
+        <h2>6. Ejercicio 3: Sistema de ventas</h2>
+        <p>En <code>ejercicio3.html</code>, crea un resumen del inventario, un formulario para registrar productos y una tabla que se pueda filtrar por nombre o categoría. El ejemplo incluye tres productos iniciales y actualiza el resumen y la tabla al registrar otro.</p>
+        <h3>Paso 1: crear el HTML</h3>
+
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Sistema de Ventas&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;header&gt;
+        &lt;h1&gt;Sistema de ventas&lt;/h1&gt;
+        &lt;p&gt;Administración de productos e inventario&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;main&gt;
+
+        &lt;section class="resumen"&gt;
+            &lt;div class="tarjeta"&gt;
+                &lt;h3&gt;Total de productos&lt;/h3&gt;
+                &lt;p id="totalProductos"&gt;0&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class="tarjeta"&gt;
+                &lt;h3&gt;Valor del inventario&lt;/h3&gt;
+                &lt;p id="valorInventario"&gt;$0&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class="tarjeta"&gt;
+                &lt;h3&gt;Producto más costoso&lt;/h3&gt;
+                &lt;p id="productoCostoso"&gt;Sin productos&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class="tarjeta"&gt;
+                &lt;h3&gt;Productos con poco stock&lt;/h3&gt;
+                &lt;p id="pocoStock"&gt;0&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section class="contenedor"&gt;
+
+            &lt;h2&gt;Registrar producto&lt;/h2&gt;
+
+            &lt;form id="formularioProducto"&gt;
+
+                &lt;div class="grupo"&gt;
+                    &lt;label for="nombre"&gt;Nombre del producto&lt;/label&gt;
+                    &lt;input type="text" id="nombre" required&gt;
+                &lt;/div&gt;
+
+                &lt;div class="grupo"&gt;
+                    &lt;label for="categoria"&gt;Categoría&lt;/label&gt;
+                    &lt;select id="categoria" required&gt;
+                        &lt;option value=""&gt;Seleccione una categoría&lt;/option&gt;
+                        &lt;option value="Tecnología"&gt;Tecnología&lt;/option&gt;
+                        &lt;option value="Accesorios"&gt;Accesorios&lt;/option&gt;
+                        &lt;option value="Oficina"&gt;Oficina&lt;/option&gt;
+                        &lt;option value="Hogar"&gt;Hogar&lt;/option&gt;
+                    &lt;/select&gt;
+                &lt;/div&gt;
+
+                &lt;div class="grupo"&gt;
+                    &lt;label for="precio"&gt;Precio&lt;/label&gt;
+                    &lt;input type="number" id="precio" min="0.01" step="0.01" required&gt;
+                &lt;/div&gt;
+
+                &lt;div class="grupo"&gt;
+                    &lt;label for="stock"&gt;Cantidad disponible&lt;/label&gt;
+                    &lt;input type="number" id="stock" min="0" step="1" required&gt;
+                &lt;/div&gt;
+
+                &lt;button type="submit" id="btnGuardar"&gt;
+                    Registrar producto
+                &lt;/button&gt;
+
+            &lt;/form&gt;
+
+        &lt;/section&gt;
+
+        &lt;section class="contenedor"&gt;
+
+            &lt;h2&gt;Inventario de productos&lt;/h2&gt;
+
+            &lt;div class="filtros"&gt;
+                &lt;label for="buscar"&gt;Buscar por nombre:&lt;/label&gt;
+                &lt;input
+                    type="text"
+                    id="buscar"
+                    placeholder="Buscar producto por nombre..."
+                &gt;
+
+                &lt;label for="filtroCategoria"&gt;Filtrar por categoría:&lt;/label&gt;
+                &lt;select id="filtroCategoria"&gt;
+                    &lt;option value=""&gt;Todas las categorías&lt;/option&gt;
+                    &lt;option value="Tecnología"&gt;Tecnología&lt;/option&gt;
+                    &lt;option value="Accesorios"&gt;Accesorios&lt;/option&gt;
+                    &lt;option value="Oficina"&gt;Oficina&lt;/option&gt;
+                    &lt;option value="Hogar"&gt;Hogar&lt;/option&gt;
+                &lt;/select&gt;
+
+            &lt;/div&gt;
+
+            &lt;p id="mensaje"&gt;&lt;/p&gt;
+
+            &lt;div class="tabla-contenedor"&gt;
+                &lt;table&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;ID&lt;/th&gt;
+                            &lt;th&gt;Producto&lt;/th&gt;
+                            &lt;th&gt;Categoría&lt;/th&gt;
+                            &lt;th&gt;Precio&lt;/th&gt;
+                            &lt;th&gt;Stock&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+
+                    &lt;tbody id="tablaProductos"&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+
+        &lt;/section&gt;
+
+    &lt;/main&gt;
+
+    &lt;footer&gt;
+        &lt;p&gt;Proyecto académico - Sistema de ventas con JavaScript&lt;/p&gt;
+    &lt;/footer&gt;
+
+    &lt;script src="js/ejercicio3.js"&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <h3>Paso 2: programar la lógica</h3>
+        <p>En <code>js/ejercicio3.js</code>, guarda los productos en un arreglo. El código calcula los indicadores, registra productos y actualiza la tabla con los filtros seleccionados:</p>
+        <pre><code class="language-javascript">let listaProductos = [
+    { id: 1, nombre: "Teclado", categoria: "Accesorios", precio: 85000, stock: 15 },
+    { id: 2, nombre: "Mouse", categoria: "Accesorios", precio: 45000, stock: 20 },
+    { id: 3, nombre: "Monitor", categoria: "Tecnología", precio: 650000, stock: 4 }
+];
+
+let totalProductos = listaProductos.length;
+document.getElementById("totalProductos").innerText = totalProductos;
+
+let valorInventario = 0;
+for (let i = 0; i < listaProductos.length; i++) {
+    valorInventario += listaProductos[i].precio * listaProductos[i].stock;
+}
+document.getElementById("valorInventario").innerText = valorInventario.toLocaleString();
+
+let productoCaro = listaProductos[0].nombre;
+let precioMayor = listaProductos[0].precio;
+
+for (let i = 1; i < listaProductos.length; i++) {
+    if (listaProductos[i].precio > precioMayor) {
+        productoCaro = listaProductos[i].nombre;
+        precioMayor = listaProductos[i].precio;
+    }
+}
+
+document.getElementById("productoCostoso").innerText =
+    `${productoCaro} - ${precioMayor} `;
+
+let productoPocoStock = "";
+for (let i = 1; i < listaProductos.length; i++) {
+    if (listaProductos[i].stock < 10) {
+        productoPocoStock = listaProductos[i];
+    }
+}
+
+document.getElementById("pocoStock").innerText =
+    `${productoPocoStock.nombre} - ${productoPocoStock.stock} unidades`;
+
+let tablaProductos = document.getElementById("tablaProductos");
+listaProductos.forEach(producto => {
+    const fila = tablaProductos.insertRow();
+    [producto.id, producto.nombre, producto.categoria, producto.precio.toLocaleString(), producto.stock]
+        .forEach(valor => fila.insertCell().textContent = valor);
+});
+
+function agregarProducto() {
+    event.preventDefault();
+    let id = document.getElementById("idProducto").value;
+    let nombre = document.getElementById("nombre").value;
+    let categoria = document.getElementById("categoria").value;
+    let precio = parseFloat(document.getElementById("precio").value);
+    let stock = parseInt(document.getElementById("stock").value);
+    let nuevoProducto = { id, nombre, categoria, precio, stock };
+    listaProductos.push(nuevoProducto);
+    actualizarTabla();
+}
+
+function actualizarTabla() {
+    let tablaProductos = document.getElementById("tablaProductos");
+    listaProductos.forEach(producto => {
+        const fila = tablaProductos.insertRow();
+        [producto.id, producto.nombre, producto.categoria, producto.precio.toLocaleString(), producto.stock]
+            .forEach(valor => fila.insertCell().textContent = valor);
+    });
+}</code></pre>
+
+        <h3>Paso 3: probar</h3>
+        <ul>
+            <li>Comprueba que al abrir la página aparezcan los tres productos iniciales y los indicadores.</li>
+            <li>Registra un producto y verifica que se actualicen el total, el valor del inventario y la tabla.</li>
+            <li>Busca por nombre y cambia la categoría; comprueba que ambos filtros funcionen.</li>
+            <li>Busca un producto inexistente y verifica el mensaje de resultado vacío.</li>
+        </ul>
+
+ 
+
+    </main>
+
+    <script>
+        document.querySelectorAll("pre > code").forEach(function (code) {
+            code.textContent = code.textContent.replace(/\n[ \t]*\n+/g, "\n");
+
+            if (code.classList.contains("language-javascript")) {
+                return;
+            }
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "copy-code-button";
+            button.textContent = "Copiar código";
+            button.setAttribute("aria-label", "Copiar código");
+
+            button.addEventListener("click", async function () {
+                try {
+                    await copyCode(code.textContent);
+                    button.textContent = "¡Copiado!";
+                } catch (error) {
+                    console.error("No se pudo copiar el código.", error);
+                    button.textContent = "No se pudo copiar";
+                }
+
+                window.setTimeout(function () {
+                    button.textContent = "Copiar código";
+                }, 2000);
+            });
+
+            code.parentElement.appendChild(button);
+        });
+
+        async function copyCode(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+                return;
+            }
+
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.setAttribute("readonly", "");
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+
+            try {
+                textArea.select();
+                if (!document.execCommand("copy")) {
+                    throw new Error("El navegador no permitió copiar el código.");
+                }
+            } finally {
+                textArea.remove();
+            }
+        }
+    </script>
+</body>
+</html>
